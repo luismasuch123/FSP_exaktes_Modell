@@ -210,8 +210,9 @@ for path in yamlpaths:
     # Optimize model
     m.optimize()
 
+    #TODO: in Lösungsdatei schreiben auf die Lösungschecker zugreift
     for v in m.getVars():
-        print('%s %g' % (v.varName, v.x)) #TODO: in Lösungsdatei schreiben auf die Lösungschecker zugreift
+        print('%s %g' % (v.varName, v.x))
 
     print('Obj: %g' % m.objVal)
 
@@ -219,6 +220,6 @@ for path in yamlpaths:
     check_instance(in_set, s_set, l_set, k_set, r_i_s_l, s_k_s_l)
 
     #Lösungs-Checker
-    check_solution(k_set, i_set, in_set, x_i_j_k, d_k_s, d_k_e, y_in, z_k_in)
+    check_solution(k_set, i_set, in_set, s_set, l_set, d_k_s, d_k_e, r_i_s_l, s_k_s_l, y_in, z_k_in, x_i_j_k)
 
 
