@@ -11,6 +11,8 @@ import yaml
 import gurobipy as gp
 from gurobipy import GRB
 import argparse
+from fsp_instance_checker import check_instance
+from fsp_solution_checker import check_solution
 
 # parse script arguments
 parser = argparse.ArgumentParser(description='Solves FSP_exaktes_Modell')
@@ -176,6 +178,7 @@ for path in yamlpaths:
     # Create a new model
     m = gp.Model("fsp")
     m.setParam("TimeLimit", 1*10)
+    #TODO: Epsilon
 
     # variables
     # binary decision variables #
@@ -212,81 +215,10 @@ for path in yamlpaths:
 
     print('Obj: %g' % m.objVal)
 
-    #Instanzchecker TODO:auslagern und Methoden schreiben
-    print("\n ---Instanzchecker--- \n")
+    #Instanz-Checker
+    check_instance(in_set, s_set, l_set, k_set, r_i_s_l, s_k_s_l)
 
-    #Skills vorhanden, um Aufgaben zu lösen? (Unterscheidung zwischen nicht genug Techniker und gar keiner möglich!) #TODO: in Lösungschecker, ob diese dann auch tatsächlich gelöst wurden (über skillsOfRequiredLevels[])
-    print("Sind alle Skills vorhanden, um die Tasks zu erfüllen?")
-    allSkillsOfRequiredLevels = True
-    skillsOfRequiredLevel = []
-    for i in in_set:
-        skillsOfRequiredLevelHelp = True
-        for s in s_set:
-            workersWithCharacteristicsCount = 0
-            for l in l_set:
-                if r_i_s_l[i][s][l] != 0:
-                    for k in k_set:
-                        workersWithCharacteristicsCount += s_k_s_l[k][s][l]
-                    if workersWithCharacteristicsCount == 0:
-                        print("Task " + str(i+1) + ": Kein Techniker vorhanden, der Skill " + str(s+1) + " mit Level " + str(l) + " beherrscht!")
-                        allSkillsOfRequiredLevels = False
-                        skillsOfRequiredLevelHelp = False
-                    elif workersWithCharacteristicsCount < r_i_s_l[i][s][l]:
-                        print("Task " + str(i+1) + ": " + str(workersWithCharacteristicsCount) + " Techniker vorhanden, der/die Skill " + str(s+1) + " mit Level " + str(l) + " beherrscht/beherrschen -> unzureichend! (" + str(r_i_s_l[i][s][l]) + " benötigt)")
-                        allSkillsOfRequiredLevels = False
-                        skillsOfRequiredLevelHelp = False
-        skillsOfRequiredLevel.append(skillsOfRequiredLevelHelp)
-
-    if allSkillsOfRequiredLevels:
-        print("Alle Tasks könnten prinzipiell mit den vorhandenen Skills und den darin bestehenden Leveln erfüllt werden!")
-
-    #TODO:auslagern und Methoden schreiben
-    print("\n ---Lösungschecker--- \n")
-
-    print("Fahren Techniker los?") #Wäre möglich, dass Techniker losfährt, aber keinen Task erfüllt, weil nicht benötigt oder nicht die nötigen Skills? -> Beantwortung zusammen mit Skills vorhanden, um Aufgabe zu lösen?
-    allLeave = True
-    for k in k_set:
-        leftDepotCount = 0
-        for j in i_set:
-            leftDepotCount += x_i_j_k[d_k_s[k], j, k].X
-        if leftDepotCount < 1:
-            print("Techniker " + str(k+1) + " fährt nicht los!")
-            allLeave = False
-        elif leftDepotCount > 1:
-            print("Techniker " + str(k+1) + " fährt mehrmals vom Depot los!")
-    if(allLeave):
-        print("Alle Techniker fahren einmal vom Depot los!")
-
-    print("\nKommen Techniker zum Depot zurück?")
-    allComeBack = True
-    for k in k_set:
-        ComeBackToDepotCount = 0
-        for i in i_set:
-            ComeBackToDepotCount += x_i_j_k[i, d_k_e[k], k].X
-        if ComeBackToDepotCount < 1:
-            print("Techniker " + str(k + 1) + " kehrt nicht zum Depot zurück!")
-            allComeBack = False
-        elif ComeBackToDepotCount > 1:
-            print("Techniker " + str(k + 1) + " kehrt mehrmals zum Depot zurück!")
-    if (allComeBack):
-        print("Alle Techniker kehren einmal zum Depot zurück!")
-
-    print("\nFahren Techniker los ohne einen Task zu erfüllen?")
-    allWork = True
-    for k in k_set:
-        worksOnTaskCount = 0
-        for i in in_set:
-            worksOnTaskCount += z_k_in[k,i].X
-        if worksOnTaskCount < 1:
-            print("Techniker " + str(k+1) + " erfüllt keinen Task!")
-            allWork = False
-    if (allWork):
-        print("Alle Techniker fahren los und erfüllen einen Task!")
-
-    #TODO: bei Auslagerung von Checkern Zugriff auf skillsOfRequiredLevel[]
-    print("\nWerden Skills nicht erfüllt, obwohl die dafür benötigten Skills und Level prinzipiell vorhanden wären?")
-    for i in in_set:
-        if y_in[i].X != skillsOfRequiredLevel[i]:
-            print("Task " + str(i+1) + " wurde nicht erfüllt, obwohl die notwendigen Qualifikationen vorhanden wären!")
+    #Lösungs-Checker
+    check_solution(k_set, i_set, in_set, x_i_j_k, d_k_s, d_k_e, y_in, z_k_in)
 
 
