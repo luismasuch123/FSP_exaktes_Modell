@@ -91,7 +91,7 @@ def are_members_of_teams_qualified(in_set, s_set, l_set, k_set, r_i_s_l, s_k_s_l
                                 worksOnTaskWithSkillCount += y_in[i].X
                         if int(worksOnTaskWithSkillCount) != r_i_s_l[i][s][l]:
                             allTeamsQualified = False
-                            print("Task " + str(i) + ": Skill " + str(s+1) + "benötigt " + str(r_i_s_l[i][s][l]) +  "Techniker! (" + str(worksOnTaskWithSkillCount) + " zugewiesen)")
+                            print("Task " + str(i) + ": Skill " + str(s+1) + " benötigt " + str(r_i_s_l[i][s][l]) + " Techniker! (" + str(int(worksOnTaskWithSkillCount)) + " zugewiesen)")
     if allTeamsQualified:
         print("Alle Skills in den erfüllten Tasks können von den am Team beteiligten, qualifizierten Technikern erbracht werden!")
 

@@ -11,15 +11,43 @@ import yaml
 import gurobipy as gp
 from gurobipy import GRB
 import argparse
+import csv
+from pathlib import Path
 from fsp_instance_checker import check_instance
 from fsp_solution_checker import check_solution
+from fsp_plot_solution import plot_solution
 
 # parse script arguments
 parser = argparse.ArgumentParser(description='Solves FSP_exaktes_Modell')
-parser.add_argument('-y', '--yamldirs', nargs='+', default=[], help='directory containing yaml files')
-args = parser.parse_args()
+parser.add_argument('-y', '--yaml-dirs', nargs='+', default=[], help='directory containing yaml files')
+parser.add_argument('-c', '--csv-dir', help='directory to write sol_csv to')
+parser.add_argument('--write-solution', action='store_true', default=True, help='write solution to csv')
+parser.add_argument('--write-callback', action='store_true', default=True, help='write callback to csv')
+parser.add_argument('--display-solution', action='store_true', default=True, help='display solution')
+parser.add_argument('--check-instance', action='store_true', default=True, help='check instance')
+parser.add_argument('--check-solution', action='store_true', default=True, help='check solution')
 
-yamlpaths = args.yamldirs
+
+args = parser.parse_args()
+writeSolution = args.write_solution
+writeCallback = args.write_callback
+displaySolution = args.display_solution
+checkInstance = args.check_instance
+checkSolution = args.check_solution
+
+yamlpaths = args.yaml_dirs
+csvdir = args.csv_dir
+
+def data_cb(model, where):
+    if where == gp.GRB.Callback.MIP:
+        cur_lb = model.cbGet(GRB.Callback.MIP_OBJBST)
+        cur_ub = model.cbGet(GRB.Callback.MIP_OBJBND)
+        cur_gap = (cur_ub - cur_lb) / cur_lb
+        cur_time = model.cbGet(GRB.Callback.RUNTIME)
+
+
+        model._data.append([cur_lb, cur_ub, cur_gap, cur_time])
+
 
 for path in yamlpaths:
     if not path:
@@ -33,6 +61,7 @@ for path in yamlpaths:
     i_val = len(data["tasks"]) + len(data["workers"])
     in_val = len(data["tasks"])
     k_val = len(data["workers"])
+    #TODO: über Instanzen iterieren und Maximum nehmen
     s_val = 5 # Achtung: Level 1-5 #TODO: in yaml-Datei
     l_val = 5 # Achtung: Level 0-4
 
@@ -48,6 +77,18 @@ for path in yamlpaths:
         for j in i_set:
             if i != j:
                 j_set[i].append(j)
+
+    #parameters for plot
+    pos_i_dir = [] #lateral/longitudinal (direction) position of i
+    for k in k_set:
+        pos_i_dir.append([])
+        pos_i_dir[k].append(data["workers"][k]["lateralPosition"])
+        pos_i_dir[k].append(data["workers"][k]["longitudinalPosition"])
+    for i in in_set:
+        pos_i_dir.append([])
+        pos_i_dir[i+k_val].append(data["tasks"][i]["lateralPosition"])
+        pos_i_dir[i+k_val].append(data["tasks"][i]["longitudinalPosition"])
+    print(pos_i_dir)
 
     #parameters
     t_i_j = []
@@ -208,7 +249,16 @@ for path in yamlpaths:
     m.addConstrs(((z_k_in[k, i] <= gp.quicksum(x_i_j_k[i+k_val, j, k] for j in dminus_i[i+k_val])) for i in in_set for k in k_set), "c11")
 
     # Optimize model
-    m.optimize()
+    m._data = []
+    m.optimize(callback=data_cb)
+
+    if writeCallback:
+        header = ['LB', 'UB', 'MIPGap', 'Zeit']
+        instanzName = Path(path).stem
+        with open(csvdir + "_" + instanzName + '_cb.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(header)
+            writer.writerows(m._data)
 
     #TODO: in Lösungsdatei schreiben auf die Lösungschecker zugreift
     for v in m.getVars():
@@ -216,10 +266,27 @@ for path in yamlpaths:
 
     print('Obj: %g' % m.objVal)
 
+    if writeSolution:
+        header = ['Instanz', 'Zeit', 'Zfkt.wert', 'MIPGap']
+        instanzName = Path(path).stem
+        data = [instanzName, m.runtime, m.objVal, m.mipgap]
+        with open(csvdir + "_" + instanzName + '_sol.csv', 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(header)
+            writer.writerow(data)
+    #help(GRB.attr)
+
     #Instanz-Checker
-    check_instance(in_set, s_set, l_set, k_set, r_i_s_l, s_k_s_l)
+    if checkInstance:
+        check_instance(in_set, s_set, l_set, k_set, r_i_s_l, s_k_s_l)
 
     #Lösungs-Checker
-    check_solution(k_set, i_set, in_set, s_set, l_set, d_k_s, d_k_e, r_i_s_l, s_k_s_l, y_in, z_k_in, x_i_j_k)
+    if checkSolution:
+        check_solution(k_set, i_set, in_set, s_set, l_set, d_k_s, d_k_e, r_i_s_l, s_k_s_l, y_in, z_k_in, x_i_j_k)
+
+    #Visualisierung
+    if displaySolution:
+        plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir)
+
 
 
