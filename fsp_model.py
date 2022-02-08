@@ -13,6 +13,7 @@ from gurobipy import GRB
 import argparse
 import csv
 from pathlib import Path
+import os
 from fsp_instance_checker import check_instance
 from fsp_solution_checker import check_solution
 from fsp_plot_solution import plot_solution
@@ -255,7 +256,10 @@ for path in yamlpaths:
     if writeCallback:
         header = ['LB', 'UB', 'MIPGap', 'Zeit']
         instanzName = Path(path).stem
-        with open(csvdir + "_" + instanzName + '_cb.csv', 'w') as f:
+        path = os.path.join(csvdir, instanzName)
+        if not os.path.exists(path):
+            os.mkdir(path)
+        with open(path + "/_" + instanzName + '_cb.csv', 'w') as f:
             writer = csv.writer(f)
             writer.writerow(header)
             writer.writerows(m._data)
@@ -269,8 +273,9 @@ for path in yamlpaths:
     if writeSolution:
         header = ['Instanz', 'Zeit', 'Zfkt.wert', 'MIPGap']
         instanzName = Path(path).stem
+        path = os.path.join(csvdir, instanzName)
         data = [instanzName, m.runtime, m.objVal, m.mipgap]
-        with open(csvdir + "_" + instanzName + '_sol.csv', 'w', newline='') as f:
+        with open(path + "/_" + instanzName + '_sol.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(header)
             writer.writerow(data)
