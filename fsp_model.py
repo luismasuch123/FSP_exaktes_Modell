@@ -21,7 +21,7 @@ from fsp_plot_solution import plot_solution
 # parse script arguments
 parser = argparse.ArgumentParser(description='Solves FSP_exaktes_Modell')
 parser.add_argument('-y', '--yaml-dirs', nargs='+', default=[], help='directory containing yaml files')
-parser.add_argument('-c', '--csv-dir', help='directory to write sol_csv to')
+parser.add_argument('-c', '--csv-dir', help='directory to write sol, cb and plot to')
 parser.add_argument('--write-solution', action='store_true', default=True, help='write solution to csv')
 parser.add_argument('--write-callback', action='store_true', default=True, help='write callback to csv')
 parser.add_argument('--display-solution', action='store_true', default=True, help='display solution')
@@ -225,14 +225,19 @@ for path in yamlpaths:
     # variables
     # binary decision variables #
     y_in = m.addVars(in_val, vtype=GRB.BINARY, name="y")
+    #TODO: warum ein x 0.9999
     x_i_j_k = m.addVars(i_val, i_val, k_val, vtype=GRB.BINARY, name="x") #TODO: wie i!=j modellieren?
     z_k_in = m.addVars(k_val, in_val, vtype=GRB.BINARY, name="z")
 
     #real variables
     s_i= m.addVars(i_val,vtype=GRB.CONTINUOUS, name="s")
 
-    # objective
-    m.setObjective(gp.LinExpr(p_in, y_in.select("*")), GRB.MAXIMIZE)
+    #Hilfsvarible
+
+    #objective
+    #TODO: Gewichtungsfaktor abhängig von Instanz
+    tiebreaker = True
+    m.setObjective((gp.LinExpr(p_in, y_in.select("*")) - tiebreaker * 0.001 * sum((x_i_j_k[i, j, k] * t_i_j[i][j] for k in k_set for i in i_set for j in set(j_set[i])))), GRB.MAXIMIZE)
 
     # constraints
     m.addConstrs(((gp.quicksum(x_i_j_k[d_k_e[k], i, k] for i in dplus_i[d_k_e[k]]) == gp.quicksum(x_i_j_k[j, d_k_s[k], k] for j in dminus_i[d_k_s[k]])) for k in k_set), "c6.1")
@@ -291,7 +296,7 @@ for path in yamlpaths:
 
     #Visualisierung
     if displaySolution:
-        plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir)
+        plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir, os.path.join(csvdir, instanzName),Path(path).stem)
 
 
 

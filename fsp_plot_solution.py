@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from matplotlib.collections import LineCollection
 
-def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir):
+def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir, path, instanzName):
 
     fig, ax = plt.subplots()
 
@@ -47,4 +47,5 @@ def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir)
     ax.legend(bbox_to_anchor=(1,1), loc="upper left")
     ax.grid(True)
     plt.title("FSP_Lösung")
+    plt.savefig(path + "/_" + instanzName + "_plot", bbox_inches='tight', dpi=300) #dpi stellt Qualität ein
     plt.show()
