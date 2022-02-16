@@ -46,6 +46,9 @@ def data_cb(model, where):
         cur_gap = (cur_ub - cur_lb) / cur_lb
         cur_time = model.cbGet(GRB.Callback.RUNTIME)
 
+        epsGap = 0.1
+        if cur_gap < epsGap and cur_gap > 0:
+            model.terminate()
 
         model._data.append([cur_lb, cur_ub, cur_gap, cur_time])
 
@@ -62,9 +65,8 @@ for path in yamlpaths:
     i_val = len(data["tasks"]) + len(data["workers"])
     in_val = len(data["tasks"])
     k_val = len(data["workers"])
-    #TODO: über Instanzen iterieren und Maximum nehmen
-    s_val = 5 # Achtung: Level 1-5 #TODO: in yaml-Datei
-    l_val = 5 # Achtung: Level 0-4
+    s_val = data["numberOfSkills"] # Achtung: Level 1-5
+    l_val = data["numberOfLevels"] # Achtung: Level 0-4
 
     #sets
     i_set = range(i_val)
