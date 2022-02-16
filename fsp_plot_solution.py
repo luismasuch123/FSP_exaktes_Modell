@@ -9,9 +9,10 @@ Script to display FSP_sol.
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import os
 from matplotlib.collections import LineCollection
 
-def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir, path, instanzName):
+def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir, path):
 
     fig1, ax = plt.subplots()
     fig2, axs = plt.subplots(max(k_set)+1)
@@ -58,6 +59,6 @@ def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir,
         #axs[k].grid(True)
         axs[k].set_title("%s"%("Techniker" + str(k+1)))
 
-    fig1.savefig(path + "/_" + instanzName + "_alle_Techniker_plot", bbox_inches='tight', dpi=300) #dpi stellt Qualität ein
-    fig2.savefig(path + "/_" + instanzName + "_einzelne_Techniker_plot", bbox_inches='tight', dpi=300)  # dpi stellt Qualität ein
-    plt.show()
+    fig1.savefig(os.path.join(path, "_alle_Techniker_plot.png"), bbox_inches='tight', dpi=300) #dpi stellt Qualität ein
+    fig2.savefig(os.path.join(path, "_einzelne_Techniker_plot.png"), bbox_inches='tight', dpi=300)  # dpi stellt Qualität ein
+    #plt.show()
