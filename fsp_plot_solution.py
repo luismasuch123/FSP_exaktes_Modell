@@ -13,7 +13,8 @@ from matplotlib.collections import LineCollection
 
 def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir, path, instanzName):
 
-    fig, ax = plt.subplots()
+    fig1, ax = plt.subplots()
+    fig2, axs = plt.subplots(max(k_set)+1)
 
     depots = [(pos_i_dir[k][0], pos_i_dir[k][1]) for k in k_set]
     tasks = [(pos_i_dir[i+k_val][0], pos_i_dir[i+k_val][1]) for i in in_set]
@@ -27,10 +28,14 @@ def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir,
     colors = cm.rainbow(np.linspace(0, 1, len(tasks)))
     for x, y, c, i in zip(x_tasks, y_tasks, colors, in_set):
         ax.scatter(x, y, color=c, marker="o" , s=300, label="Task "+str(i+1))
+        for k in k_set:
+            axs[k].scatter(x, y, color=c, marker="o", s=300, label="Task "+str(i+1))
 
     colors = cm.rainbow(np.linspace(0, 1, len(depots)))
     for x, y, c, k in zip(x_depots, y_depots, colors, k_set):
         ax.scatter(x, y, color=c, marker="s", s=100, label="Depot "+str(k+1))
+        for k in k_set:
+            axs[k].scatter(x, y, color=c, marker="s", s=100, label="Depot " + str(k + 1))
 
     #TODO: Graphen vor Schleife definieren, um so Bezeichnung zu ermöglichen
     color = iter(cm.rainbow(np.linspace(0, 1, len(depots))))
@@ -43,9 +48,16 @@ def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir,
                     x = [pos_i_dir[i][0], pos_i_dir[j][0]]
                     y = [pos_i_dir[i][1], pos_i_dir[j][1]]
                     ax.plot(x, y, c=c, linestyle=ls[k])
+                    axs[k].plot(x, y, c=c, linestyle=ls[k])
 
     ax.legend(bbox_to_anchor=(1,1), loc="upper left")
     ax.grid(True)
-    plt.title("FSP_Lösung")
-    plt.savefig(path + "/_" + instanzName + "_plot", bbox_inches='tight', dpi=300) #dpi stellt Qualität ein
+    ax.set_title("FSP_Lösung")
+    #ax.legend(bbox_to_anchor=(1, 1), loc="upper left")
+    for k in k_set:
+        #axs[k].grid(True)
+        axs[k].set_title("%s"%("Techniker" + str(k+1)))
+
+    fig1.savefig(path + "/_" + instanzName + "_alle_Techniker_plot", bbox_inches='tight', dpi=300) #dpi stellt Qualität ein
+    fig2.savefig(path + "/_" + instanzName + "_einzelne_Techniker_plot", bbox_inches='tight', dpi=300)  # dpi stellt Qualität ein
     plt.show()
