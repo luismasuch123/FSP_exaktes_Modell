@@ -49,15 +49,14 @@ def data_cb(model, where):
             cur_gap = 1
         cur_time = model.cbGet(GRB.Callback.RUNTIME)
 
-        epsGap = 0.1
-        if cur_gap < epsGap and cur_gap > 0:
-            model.terminate()
-
         model._data.append([cur_lb, cur_ub, cur_gap, cur_time])
 
-instanceClass = ["test"
-                #"pr01_10"
+instanceClass = [
+                "test"
+                #"pr01_10_skills_100_100_yaml"
                 ]
+
+#TODO: N für Anzahl der zu lösenden Instanzen je Instanzklasse hinzufügen
 
 instanceClassPaths = [(yamlpath[0] + "/" + instanceClass[i]) for i in range(len(instanceClass))]
 
@@ -237,7 +236,7 @@ for path in instanceClassPaths:
             # Create a new model
             m = gp.Model("fsp")
             m.setParam("TimeLimit", 1*10)
-            #TODO: Epsilon
+            m.setParam("MIPGap", 0.01)
 
             # variables
             # binary decision variables #
@@ -276,7 +275,7 @@ for path in instanceClassPaths:
             m.optimize(callback=data_cb)
 
             if writeCallback:
-                header = ['Instanz','LB', 'UB', 'MIPGap', 'Zeit']
+                header = ['LB', 'UB', 'MIPGap', 'Zeit']
                 if not os.path.exists(csvdir + "/" + Path(path).stem + "/" + instance.replace(".yaml", "")):
                     os.mkdir(csvdir + "/" + Path(path).stem + "/" + instance.replace(".yaml", ""))
                 with open(os.path.join(csvdir + "/" + Path(path).stem + "/" + instance.replace(".yaml", ""), '_cb.csv'), 'w') as f:
@@ -292,7 +291,7 @@ for path in instanceClassPaths:
 
             if writeSolution:
                 header = ['Instanz', 'Zeit', 'Zfkt.wert', 'MIPGap']
-                loesungsDaten = [instance, m.runtime, m.objVal, m.mipgap]
+                loesungsDaten = [instance.replace(".yaml", ""), m.runtime, m.objVal, m.mipgap]
                 with open(os.path.join(csvdir + "/" + Path(path).stem + "/" + instance.replace(".yaml", ""), Path(path).stem + "_" + instance.replace(".yaml", "") + '_sol.csv'), 'w', newline='') as f:
                     writer = csv.writer(f)
                     writer.writerow(header)
