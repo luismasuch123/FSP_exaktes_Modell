@@ -47,7 +47,7 @@ def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir,
     ax.grid(True)
     ax.set_title("FSP_Lösung")
 
-    fig1.savefig(os.path.join(path, "_alle_Techniker_plot.png"), bbox_inches='tight', dpi=300) #dpi stellt Qualität ein
+    fig1.savefig(os.path.join(path, "alle_Techniker_plot.png"), bbox_inches='tight', dpi=300) #dpi stellt Qualität ein
 
     color = iter(cm.rainbow(np.linspace(0, 1, len(depots))))
     for kk in k_set:
@@ -84,4 +84,4 @@ def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir,
         # ax.legend(bbox_to_anchor=(1,1), loc="upper left")
         axs.grid(True)
         axs.set_title("%s" % ("Techniker" + str(kk + 1)))
-        fig2.savefig(os.path.join(path, "_Techniker_" + str(kk+1) + "_plot.png"), bbox_inches='tight', dpi=300)  # dpi stellt Qualität ein
+        fig2.savefig(os.path.join(path, "Techniker_" + str(kk+1) + "_plot.png"), bbox_inches='tight', dpi=300)  # dpi stellt Qualität ein

@@ -53,11 +53,44 @@ def data_cb(model, where):
         model._data.append([cur_lb, cur_ub, cur_gap, cur_time])
 
 instanceClass = [
-                "pr01_10_skills_100_100_yaml"
+"pr01_10_workers_5_tasks_25_skills_1_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_25_skills_2_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_25_skills_3_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_25_skills_4_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_25_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_25_skills_10_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_25_skills_20_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_25_skills_30_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_25_skills_40_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+
+"pr01_10_workers_5_tasks_45_skills_1_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_45_skills_2_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_45_skills_3_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_45_skills_4_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_45_skills_10_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_45_skills_20_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_45_skills_30_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+"pr01_10_workers_5_tasks_45_skills_40_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
+
+# "pr01_10_workers_5_tasks_5_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_10_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_25_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
+
+# "pr01_10_workers_2_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_3_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_4_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+
+
+
                 ]
 
 #number of last instance of instance class to be solved
-N = [1]
+N = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+TIME_LIMIT = 30
+MIP_GAP = 0.001
 
 instanceClassPaths = [(yamlpath[0] + "/" + instanceClass[i]) for i in range(len(instanceClass))]
 
@@ -243,8 +276,8 @@ for path in instanceClassPaths:
 
                 # Create a new model
                 m = gp.Model("fsp")
-                m.setParam("TimeLimit", 1*30)
-                m.setParam("MIPGap", 0.01)
+                m.setParam("TimeLimit", TIME_LIMIT)
+                m.setParam("MIPGap", MIP_GAP)
 
                 # variables
                 # binary decision variables #
@@ -255,8 +288,6 @@ for path in instanceClassPaths:
 
                 #real variables
                 s_i= m.addVars(i_val,vtype=GRB.CONTINUOUS, name="s")
-
-                #Hilfsvarible
 
                 #objective
                 #TODO: Gewichtungsfaktor abhängig von Instanz
@@ -308,11 +339,11 @@ for path in instanceClassPaths:
 
                 #Instanz-Checker
                 if checkInstance:
-                    check_instance(in_set, s_set, l_set, k_set, r_i_s_l, s_k_s_l)
+                    check_instance(in_set, s_set, l_set, k_set, r_i_s_l, s_k_s_l, os.path.join(csvdir + "/" + Path(path).stem, instance.replace(".yaml", "")))
 
                 #Lösungs-Checker
                 if checkSolution:
-                    check_solution(k_set, i_set, in_set, s_set, l_set, d_k_s, d_k_e, r_i_s_l, s_k_s_l, y_in, z_k_in, x_i_j_k)
+                    check_solution(k_set, i_set, in_set, s_set, l_set, d_k_s, d_k_e, r_i_s_l, s_k_s_l, y_in, z_k_in, x_i_j_k, os.path.join(csvdir + "/" + Path(path).stem, instance.replace(".yaml", "")))
 
                 #Visualisierung
                 if displaySolution:
