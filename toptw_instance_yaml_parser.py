@@ -9,14 +9,14 @@ instanceSets = ["pr01_10",
                 #"c_r_rc_100_100"
                 ]
 
-numberOfSkills = 3
+numberOfSkills = 2
 numberOfLevels = 3
+maxRequiredWorkers = 2
 percentageTasksHaveSkills = 100
 percentageWorkersHaveSkills = 100
 probabilityWorkersMoreThanOneSkill = 0.5
 probabilityTasksMoreThanOneSkill = 0.5
 useRealisticGeoCoordinates = False
-
 
 def calcLateralPosition(inputPosition):
     if useRealisticGeoCoordinates:
@@ -55,8 +55,11 @@ for entry in instanceSets:
 
             # basic data
             line = lines[0].split()
-            number_nodes = int(line[2])
-            number_workers = int(line[1])
+            number_nodes = 20 #int(line[2])
+            number_workers = 5 #int(line[1])
+
+            if maxRequiredWorkers > number_workers:
+                maxRequiredWorkers = number_workers
 
             # workers
             line = lines[2].split()
@@ -120,13 +123,13 @@ for entry in instanceSets:
                             skills.append({
                             'id': str(s),
                             'level': int(random.randint(0, numberOfLevels - 1)),
-                            'requiredWorkers': int(random.randint(1, number_workers)) #war zuvor auf 1 gesetzt TODO: normieren bzw. Wahrscheinlichkeit viele benötigt je nach Anzahl Worker anpassen?
+                            'requiredWorkers': int(random.randint(1, maxRequiredWorkers)) #war zuvor auf 1 gesetzt TODO: normieren bzw. Wahrscheinlichkeit viele benötigt je nach Anzahl Worker anpassen?
                             })
                     if numberSkills == 0:
                         skills.append({
                             'id': str(random.randint(0, numberOfSkills - 1)),
                             'level': int(random.randint(0, numberOfLevels - 1)),
-                            'requiredWorkers': int(random.randint(1, number_workers))  # war zuvor auf 1 gesetzt
+                            'requiredWorkers': int(random.randint(1, maxRequiredWorkers))  # war zuvor auf 1 gesetzt
                         })
                 instance['tasks'].append({'extId': extId,
                                           'lateralPosition': lateralPosition,
@@ -140,13 +143,15 @@ for entry in instanceSets:
                                           }],
                                           'requiredSkills': skills
                                           })
-
             print(instance)
 
             path = "_"
 
+            path += "workers_{}_tasks_{}_".format(number_workers, number_nodes)
             if percentageTasksHaveSkills > 0:
-                path += "skills_{}_{}_".format(percentageTasksHaveSkills, percentageWorkersHaveSkills)
+                path += "skills_{}_{}_{}_".format(numberOfSkills, percentageTasksHaveSkills, percentageWorkersHaveSkills)
+                path += "levels_{}_".format(numberOfLevels)
+            path += "maxReqWorkers_{}_".format(maxRequiredWorkers)
             if useRealisticGeoCoordinates:
                 path += "realisticGeoCodes_"
             path += "yaml"
