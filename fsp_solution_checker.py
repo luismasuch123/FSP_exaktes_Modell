@@ -33,7 +33,10 @@ def do_technicians_leave(k_set, i_set, x_i_j_k, d_k_s):
     for k in k_set:
         leftDepotCount = 0
         for j in i_set:
-            leftDepotCount += x_i_j_k[d_k_s[k], j, k].X
+            x = x_i_j_k[d_k_s[k], j, k].X
+            if x > 0.9 and x < 1:
+                x = 1
+            leftDepotCount += x
         if leftDepotCount < 1:
             print("Techniker " + str(k + 1) + " fährt nicht los!")
             allLeave = False
@@ -48,7 +51,10 @@ def do_technicians_come_back(k_set, i_set, x_i_j_k, d_k_e):
     for k in k_set:
         ComeBackToDepotCount = 0
         for i in i_set:
-            ComeBackToDepotCount += x_i_j_k[i, d_k_e[k], k].X
+            x = x_i_j_k[i, d_k_e[k], k].X
+            if x > 0.9 and x < 1:
+                x = 1
+            ComeBackToDepotCount += x
         if ComeBackToDepotCount < 1:
             print("Techniker " + str(k + 1) + " kehrt nicht zum Depot zurück!")
             allComeBack = False
@@ -94,4 +100,6 @@ def are_members_of_teams_qualified(in_set, s_set, l_set, k_set, r_i_s_l, s_k_s_l
                             print("Task " + str(i) + ": Skill " + str(s+1) + " benötigt " + str(r_i_s_l[i][s][l]) + " Techniker! (" + str(int(worksOnTaskWithSkillCount)) + " zugewiesen)")
     if allTeamsQualified:
         print("Alle Skills in den erfüllten Tasks können von den am Team beteiligten, qualifizierten Technikern erbracht werden!")
+
+
 
