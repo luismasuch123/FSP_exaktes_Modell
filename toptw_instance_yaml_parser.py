@@ -9,12 +9,12 @@ instanceSets = ["pr01_10",
                 #"c_r_rc_100_100"
                 ]
 
-numberOfSkills = 2
+numberOfSkills = 5
 numberOfLevels = 3
 maxRequiredWorkers = 2
 percentageTasksHaveSkills = 100
 percentageWorkersHaveSkills = 100
-probabilityWorkersMoreThanOneSkill = 0.5
+probabilityWorkersMoreThanOneSkill = 0.2
 probabilityTasksMoreThanOneSkill = 0.5
 useRealisticGeoCoordinates = False
 
@@ -55,7 +55,7 @@ for entry in instanceSets:
 
             # basic data
             line = lines[0].split()
-            number_nodes = 20 #int(line[2])
+            number_nodes = 45 #int(line[2])
             number_workers = 5 #int(line[1])
 
             if maxRequiredWorkers > number_workers:
@@ -151,6 +151,7 @@ for entry in instanceSets:
             if percentageTasksHaveSkills > 0:
                 path += "skills_{}_{}_{}_".format(numberOfSkills, percentageTasksHaveSkills, percentageWorkersHaveSkills)
                 path += "levels_{}_".format(numberOfLevels)
+                path += "pwmtos_{}_ptmtos_{}_".format(probabilityWorkersMoreThanOneSkill, probabilityTasksMoreThanOneSkill)
             path += "maxReqWorkers_{}_".format(maxRequiredWorkers)
             if useRealisticGeoCoordinates:
                 path += "realisticGeoCodes_"
