@@ -73,7 +73,10 @@ def plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir,
 
         for i in i_set:
             for j in i_set:
-                if x_i_j_k[i, j, kk].X:
+                x = x_i_j_k[i, j, kk].X
+                if x > 0.9 and x < 1:
+                    x = 1
+                if x:
                     x = [pos_i_dir[i][0], pos_i_dir[j][0]]
                     y = [pos_i_dir[i][1], pos_i_dir[j][1]]
                     axs.plot(x, y, c=cc)
