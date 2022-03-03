@@ -9,8 +9,8 @@ instanceSets = ["pr01_10",
                 #"c_r_rc_100_100"
                 ]
 
-numberOfSkills = 5
-numberOfLevels = 3
+numberOfSkills = 2
+numberOfLevels = 2
 maxRequiredWorkers = 2
 percentageTasksHaveSkills = 100
 percentageWorkersHaveSkills = 100
@@ -55,13 +55,14 @@ for entry in instanceSets:
 
             # basic data
             line = lines[0].split()
-            number_nodes = 45 #int(line[2])
-            number_workers = 5 #int(line[1])
+            number_nodes = 3 #int(line[2])
+            number_workers = 2 #int(line[1])
 
             if maxRequiredWorkers > number_workers:
                 maxRequiredWorkers = number_workers
 
             # workers
+            #TODO: alle Worker selbes Depot -> ändern
             line = lines[2].split()
             lateralPosition = calcLateralPosition(float(line[1]))
             longitudinalPosition = calcLongitudinalPosition(float(line[2]))
@@ -125,6 +126,7 @@ for entry in instanceSets:
                             'level': int(random.randint(0, numberOfLevels - 1)),
                             'requiredWorkers': int(random.randint(1, maxRequiredWorkers)) #war zuvor auf 1 gesetzt TODO: normieren bzw. Wahrscheinlichkeit viele benötigt je nach Anzahl Worker anpassen?
                             })
+                            numberSkills += 1
                     if numberSkills == 0:
                         skills.append({
                             'id': str(random.randint(0, numberOfSkills - 1)),
