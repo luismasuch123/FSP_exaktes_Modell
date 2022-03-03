@@ -53,39 +53,29 @@ def data_cb(model, where):
         model._data.append([cur_lb, cur_ub, cur_gap, cur_time])
 
 instanceClass = [
-"pr01_10_workers_5_tasks_25_skills_1_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_25_skills_2_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_25_skills_3_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_25_skills_4_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_25_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_25_skills_10_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_25_skills_20_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_25_skills_30_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_25_skills_40_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-
-"pr01_10_workers_5_tasks_45_skills_1_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_45_skills_2_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_45_skills_3_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_45_skills_4_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_45_skills_10_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_45_skills_20_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_45_skills_30_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-"pr01_10_workers_5_tasks_45_skills_40_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
+# "pr01_10_workers_5_tasks_45_skills_1_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_45_skills_2_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_45_skills_3_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_45_skills_4_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_45_skills_10_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_45_skills_20_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_45_skills_30_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+# "pr01_10_workers_5_tasks_45_skills_40_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
 
 # "pr01_10_workers_5_tasks_5_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
 # "pr01_10_workers_5_tasks_10_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
 # "pr01_10_workers_5_tasks_25_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-# "pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
+#"pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
 
 # "pr01_10_workers_2_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
 # "pr01_10_workers_3_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
 # "pr01_10_workers_4_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
 # "pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
 
-
-
-                ]
+#"pr01_10_workers_2_tasks_5_skills_3_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
+#"pr01_10_workers_2_tasks_3_skills_2_100_100_levels_2_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
+]
 
 #number of last instance of instance class to be solved
 N = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
@@ -168,7 +158,7 @@ for path in instanceClassPaths:
 
                 d_k_s = [int(data["workers"][i]["workerId"])-1 for i in k_set] #Achtung: startet mit Depot 0
                 d_k_e = d_k_s
-                print(d_k_e)
+                #print(d_k_e)
 
                 o_i = [float(data["workers"][i]["dateTimeWindows"][0]["openingTime"]) for i in k_set] + [float(data["tasks"][i]["dateTimeWindows"][0]["openingTime"]) for i in in_set]
                 c_i = [float(data["workers"][i]["dateTimeWindows"][0]["closingTime"]) for i in k_set] + [float(data["tasks"][i]["dateTimeWindows"][0]["closingTime"]) for i in in_set]
@@ -199,7 +189,7 @@ for path in instanceClassPaths:
                     for s in range(s_val):
                         r_i_s_l[i].append([])
                         if helps < len(data["tasks"][i]["requiredSkills"]):
-                            if int(data["tasks"][i]["requiredSkills"][helps]["id"]) - 1 == s:
+                            if int(data["tasks"][i]["requiredSkills"][helps]["id"]) == s:
                                 for l in range(int(data["tasks"][i]["requiredSkills"][helps]["level"])):
                                     r_i_s_l[i][s].append(0)
                                 for l in range(int(data["tasks"][i]["requiredSkills"][helps]["level"]), int(data["tasks"][i]["requiredSkills"][helps]["level"])+1):
@@ -213,6 +203,9 @@ for path in instanceClassPaths:
                         else:
                             for l in l_set:
                                 r_i_s_l[i][s].append(0)
+                print("\n" + "r_i_s_l:")
+                print(r_i_s_l)
+                print("\n")
 
                 s_k_s_l = []
                 """
@@ -235,7 +228,7 @@ for path in instanceClassPaths:
                     for s in range(s_val):
                         s_k_s_l[k].append([])
                         if helps < len(data["workers"][k]["skills"]):
-                            if (int(data["workers"][k]["skills"][helps]["id"])-1 == s):
+                            if (int(data["workers"][k]["skills"][helps]["id"]) == s):
                                 for l in range(int(data["workers"][k]["skills"][helps]["level"])+1):
                                     s_k_s_l[k][s].append(1)
                                 for l in range(int(data["workers"][k]["skills"][helps]["level"])+1, l_val):
@@ -247,6 +240,9 @@ for path in instanceClassPaths:
                         else:
                             for l in l_set:
                                 s_k_s_l[k][s].append(0)
+                print("\n" + "s_k_s_l:")
+                print(s_k_s_l)
+                print("\n")
 
                 dplus_i = []
                 """
@@ -283,7 +279,7 @@ for path in instanceClassPaths:
                 # binary decision variables #
                 y_in = m.addVars(in_val, vtype=GRB.BINARY, name="y")
                 #TODO: warum ein x 0.9999
-                x_i_j_k = m.addVars(i_val, i_val, k_val, vtype=GRB.BINARY, name="x") #TODO: wie i!=j modellieren?
+                x_i_j_k = m.addVars([(i,j,k) for i in i_set for j in i_set for k in k_set if i != j], vtype=GRB.BINARY, name="x")
                 z_k_in = m.addVars(k_val, in_val, vtype=GRB.BINARY, name="z")
 
                 #real variables
@@ -298,7 +294,8 @@ for path in instanceClassPaths:
                 m.addConstrs(((gp.quicksum(x_i_j_k[d_k_e[k], i, k] for i in dplus_i[d_k_e[k]]) == gp.quicksum(x_i_j_k[j, d_k_s[k], k] for j in dminus_i[d_k_s[k]])) for k in k_set), "c6.1")
                 m.addConstrs(((gp.quicksum(x_i_j_k[j, d_k_s[k], k] for j in dminus_i[d_k_s[k]]) == 1) for k in k_set), "c6.2")
 
-                m.addConstrs(((gp.quicksum(x_i_j_k[j, i, k] for j in dminus_i[i]) == gp.quicksum(x_i_j_k[i, h, k] for h in dplus_i[i])) for i in in_set for k in k_set), "c7")
+                #m.addConstrs(((gp.quicksum(x_i_j_k[j, i, k] for j in dminus_i[i]) == gp.quicksum(x_i_j_k[i, h, k] for h in dplus_i[i])) for i in in_set for k in k_set), "c7")
+                m.addConstrs(((gp.quicksum(x_i_j_k[j, i+k_val, k] for j in dminus_i[i+k_val]) == gp.quicksum(x_i_j_k[i+k_val, h, k] for h in dplus_i[i+k_val])) for i in in_set for k in k_set), "c7")
 
                 m.addConstrs(((s_i[i] + t_i_j[i][j] + t_i[i] - s_i[j] <= M * (1 - x_i_j_k[i, j, k])) for k in k_set for i in i_set for j in set(j_set[i])), "c8") #if i!=j möglich
 
@@ -307,7 +304,7 @@ for path in instanceClassPaths:
 
                 m.addConstrs(((y_in[i] * r_i_s_l[i][s][l] <= gp.quicksum(z_k_in[k, i] * s_k_s_l[k][s][l] for k in k_set)) for i in in_set for s in s_set for l in l_set), "c10")
 
-                m.addConstrs(((z_k_in[k, i] <= gp.quicksum(x_i_j_k[i+k_val, j, k] for j in dminus_i[i+k_val])) for i in in_set for k in k_set), "c11")
+                m.addConstrs(((z_k_in[k, i] <= gp.quicksum(x_i_j_k[j, i+k_val, k] for j in dminus_i[i+k_val])) for i in in_set for k in k_set), "c11")
 
                 # Optimize model
                 m._data = []
@@ -323,10 +320,14 @@ for path in instanceClassPaths:
                         writer.writerows(m._data)
 
                 #TODO: in Lösungsdatei schreiben auf die Lösungschecker zugreift
-                for v in m.getVars():
-                    print('%s %g' % (v.varName, v.x))
-
-                print('Obj: %g' % m.objVal)
+                with open(os.path.join(csvdir + "/" + Path(path).stem, instance.replace(".yaml", "")) + "/Solution_Variables.txt", "w") as datei:
+                    for v in m.getVars():
+                        text = '%s %g' % (v.varName, v.x)
+                        print(text)
+                        datei.write(text + "\n")
+                    text = 'Obj: %g' % m.objVal
+                    print(text)
+                    datei.write("\n" + text)
 
                 if writeSolution:
                     header = ['Instanz', 'Zeit', 'Zfkt.wert', 'MIPGap']
@@ -343,9 +344,9 @@ for path in instanceClassPaths:
 
                 #Lösungs-Checker
                 if checkSolution:
-                    check_solution(k_set, i_set, in_set, s_set, l_set, d_k_s, d_k_e, r_i_s_l, s_k_s_l, y_in, z_k_in, x_i_j_k, os.path.join(csvdir + "/" + Path(path).stem, instance.replace(".yaml", "")))
+                    check_solution(k_set, i_set, j_set, in_set, s_set, l_set, d_k_s, d_k_e, r_i_s_l, s_k_s_l, y_in, z_k_in, x_i_j_k, os.path.join(csvdir + "/" + Path(path).stem, instance.replace(".yaml", "")))
 
                 #Visualisierung
                 if displaySolution:
-                    plot_solution(i_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir, os.path.join(csvdir + "/" + Path(path).stem, instance.replace(".yaml", "")))
+                    plot_solution(i_set, j_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir, os.path.join(csvdir + "/" + Path(path).stem, instance.replace(".yaml", "")))
     noInstanceClass += 1
