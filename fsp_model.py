@@ -251,18 +251,18 @@ for path in instanceClassPaths:
                     if i < k_val:
                         dplus_i.append(set(list(range(k_val, i_val))))
                     else:
-                        dplus_i.append(set(list(range(k_val, i)) + list(range(i+1, i_val))))
+                        dplus_i.append(set(list(range(i)) + list(range(i+1, i_val))))
                 #for i in i_set:
                 #    dplus_i.append(set(j_set[i]))
 
                 dminus_i = []
 
                 for i in i_set:
-                    #dplus_i.append([])
+                    #dminus_i.append([])
                     if i < k_val:
                         dminus_i.append(set(list(range(k_val, i_val))))
                     else:
-                        dminus_i.append(set(list(range(k_val, i)) + list(range(i + 1, i_val))))
+                        dminus_i.append(set(list(range(i)) + list(range(i + 1, i_val))))
                 # for i in i_set:
                 #     dminus_i.append(set(j_set[i]))
 
@@ -289,7 +289,7 @@ for path in instanceClassPaths:
 
                 # constraints
                 m.addConstrs(((gp.quicksum(x_i_j_k[d_k_e[k], i, k] for i in dplus_i[d_k_e[k]]) == gp.quicksum(x_i_j_k[j, d_k_s[k], k] for j in dminus_i[d_k_s[k]])) for k in k_set), "c6.1")
-                m.addConstrs(((gp.quicksum(x_i_j_k[j, d_k_s[k], k] for j in dminus_i[d_k_s[k]]) == 1) for k in k_set), "c6.2")
+                m.addConstrs(((gp.quicksum(x_i_j_k[j, d_k_s[k], k] for j in dminus_i[d_k_s[k]]) <= 1) for k in k_set), "c6.2")
 
                 #m.addConstrs(((gp.quicksum(x_i_j_k[j, i, k] for j in dminus_i[i]) == gp.quicksum(x_i_j_k[i, h, k] for h in dplus_i[i])) for i in in_set for k in k_set), "c7")
                 m.addConstrs(((gp.quicksum(x_i_j_k[j, i+k_val, k] for j in dminus_i[i+k_val]) == gp.quicksum(x_i_j_k[i+k_val, h, k] for h in dplus_i[i+k_val])) for i in in_set for k in k_set), "c7")
