@@ -66,15 +66,15 @@ instanceClass = [
 # "pr01_10_workers_5_tasks_5_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
 # "pr01_10_workers_5_tasks_10_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
 # "pr01_10_workers_5_tasks_25_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-#"pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
+# "pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
 
-# "pr01_10_workers_2_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-# "pr01_10_workers_3_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-# "pr01_10_workers_4_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
-# "pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+#"pr01_10_workers_2_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+#"pr01_10_workers_3_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+#"pr01_10_workers_4_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
+#"pr01_10_workers_5_tasks_45_skills_5_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml",
 
 #"pr01_10_workers_2_tasks_5_skills_3_100_100_levels_3_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
-#"pr01_10_workers_2_tasks_3_skills_2_100_100_levels_2_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
+"pr01_10_workers_2_tasks_3_skills_2_100_100_levels_2_pwmtos_0.2_ptmtos_0.5_maxReqWorkers_2_yaml"
 ]
 
 #number of last instance of instance class to be solved
@@ -245,28 +245,26 @@ for path in instanceClassPaths:
                 print("\n")
 
                 dplus_i = []
-                """
+
                 for i in i_set:
-                    dplus_i.append([])
+                    #dplus_i.append([])
                     if i < k_val:
-                        dplus_i[i].append(list(range(k_val, i_val)))
+                        dplus_i.append(set(list(range(k_val, i_val))))
                     else:
-                        dplus_i[i].append(list(range(k_val, i)) + list(range(i+1, i_val)))
-                """
-                for i in i_set:
-                    dplus_i.append(set(j_set[i]))
+                        dplus_i.append(set(list(range(k_val, i)) + list(range(i+1, i_val))))
+                #for i in i_set:
+                #    dplus_i.append(set(j_set[i]))
 
                 dminus_i = []
-                """
+
                 for i in i_set:
-                    dplus_i.append([])
+                    #dplus_i.append([])
                     if i < k_val:
-                        dplus_i[i].append(list(range(k_val, i_val)))
+                        dminus_i.append(set(list(range(k_val, i_val))))
                     else:
-                        dplus_i[i].append(list(range(k_val, i)) + list(range(i + 1, i_val)))
-                """
-                for i in i_set:
-                    dminus_i.append(set(j_set[i]))
+                        dminus_i.append(set(list(range(k_val, i)) + list(range(i + 1, i_val))))
+                # for i in i_set:
+                #     dminus_i.append(set(j_set[i]))
 
                 M = 1000000
 
@@ -278,7 +276,6 @@ for path in instanceClassPaths:
                 # variables
                 # binary decision variables #
                 y_in = m.addVars(in_val, vtype=GRB.BINARY, name="y")
-                #TODO: warum ein x 0.9999
                 x_i_j_k = m.addVars([(i,j,k) for i in i_set for j in i_set for k in k_set if i != j], vtype=GRB.BINARY, name="x")
                 z_k_in = m.addVars(k_val, in_val, vtype=GRB.BINARY, name="z")
 
@@ -319,7 +316,6 @@ for path in instanceClassPaths:
                         writer.writerow(header)
                         writer.writerows(m._data)
 
-                #TODO: in Lösungsdatei schreiben auf die Lösungschecker zugreift
                 with open(os.path.join(csvdir + "/" + Path(path).stem, instance.replace(".yaml", "")) + "/Solution_Variables.txt", "w") as datei:
                     for v in m.getVars():
                         text = '%s %g' % (v.varName, v.x)
