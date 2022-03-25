@@ -12,7 +12,7 @@ import matplotlib.cm as cm
 import os
 from matplotlib.collections import LineCollection
 
-def plot_solution(i_set, j_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos_i_dir, path):
+def plot_solution(i_set, j_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, d_k_e, pos_i_dir, path):
 
     fig1, ax = plt.subplots()
 
@@ -37,11 +37,12 @@ def plot_solution(i_set, j_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos
     for k in k_set:
         c=next(color)
         for i in i_set:
-            for j in set(j_set[i]):
-                if x_i_j_k[i, j, k].X:
-                    x = [pos_i_dir[i][0], pos_i_dir[j][0]]
-                    y = [pos_i_dir[i][1], pos_i_dir[j][1]]
-                    ax.plot(x, y, c=c)
+            for j in set(j_set[k][i]):
+                if i == d_k_e[k] or i >= k_val:
+                    if x_i_j_k[i, j, k].X:
+                        x = [pos_i_dir[i][0], pos_i_dir[j][0]]
+                        y = [pos_i_dir[i][1], pos_i_dir[j][1]]
+                        ax.plot(x, y, c=c)
 
     #ax.legend(bbox_to_anchor=(1,1), loc="upper left")
     ax.grid(True)
@@ -73,14 +74,15 @@ def plot_solution(i_set, j_set, k_set, in_set, k_val, y_in, x_i_j_k, z_k_in, pos
                 axs.scatter(x, y, color=c, marker="s", s=100, label="Depot " + str(k + 1))
 
         for i in i_set:
-            for j in set(j_set[i]):
-                x = x_i_j_k[i, j, kk].X
-                if x > 0.9 and x < 1:
-                    x = 1
-                if x:
-                    x = [pos_i_dir[i][0], pos_i_dir[j][0]]
-                    y = [pos_i_dir[i][1], pos_i_dir[j][1]]
-                    axs.plot(x, y, c=cc)
+            for j in set(j_set[kk][i]):
+                if i == d_k_e[kk] or i >= k_val:
+                    x = x_i_j_k[i, j, kk].X
+                    if x > 0.9 and x < 1:
+                        x = 1
+                    if x:
+                        x = [pos_i_dir[i][0], pos_i_dir[j][0]]
+                        y = [pos_i_dir[i][1], pos_i_dir[j][1]]
+                        axs.plot(x, y, c=cc)
 
         # ax.legend(bbox_to_anchor=(1,1), loc="upper left")
         axs.grid(True)
