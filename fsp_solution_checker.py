@@ -21,12 +21,12 @@ def check_solution(k_set, i_set, j_set, in_set, s_set, l_set, d_k_s, d_k_e, r_i_
         text = "Fahren Techniker los? \n"
         print(text)
         datei.write(text)
-        do_technicians_leave(k_set, i_set, j_set, x_i_j_k, d_k_s, datei)
+        do_technicians_leave(k_set, i_set, in_set, j_set, x_i_j_k, z_k_in, d_k_s, datei)
 
         text = "\nKommen Techniker zum Depot zurück? \n"
         print(text)
         datei.write(text)
-        do_technicians_come_back(k_set, i_set, j_set, x_i_j_k, d_k_e, datei)
+        do_technicians_come_back(k_set, i_set, in_set, j_set, x_i_j_k, z_k_in, d_k_e, datei)
 
         text = "\nFahren Techniker los ohne einen Task zu erfüllen? \n"
         print(text)
@@ -44,42 +44,59 @@ def check_solution(k_set, i_set, j_set, in_set, s_set, l_set, d_k_s, d_k_e, r_i_
         are_members_of_teams_qualified(in_set, s_set, l_set, k_set, r_i_s_l, s_k_s_l, y_in, z_k_in, datei)
 
 
-def do_technicians_leave(k_set, i_set, j_set, x_i_j_k, d_k_s, datei):
-    allLeave = True
+def do_technicians_leave(k_set, i_set, in_set, j_set, x_i_j_k, z_k_in, d_k_s, datei):
+    allLeaveThatFulfillTask = True
     for k in k_set:
+        technicianFulfillsTask = False
         leftDepotCount = 0
-        for j in set(j_set[d_k_s[k]]):
+        for j in set(j_set[k][d_k_s[k]]):
             x = x_i_j_k[d_k_s[k], j, k].X
             if x > 0.9 and x < 1:
                 x = 1
             leftDepotCount += x
         if leftDepotCount < 1:
-            text = "Techniker " + str(k + 1) + " fährt nicht los! \n"
+            for i in in_set:
+                if z_k_in[k, i].X == 1:
+                    allLeaveThatFulfillTask = False
+                    technicianFulfillsTask = True
+            if not technicianFulfillsTask:
+                text = "Techniker " + str(k + 1) + " fährt nicht los, erfüllt aber auch keinen Task! \n"
+            else:
+                text = "Techniker " + str(k + 1) + " fährt nicht los, obwohl er einen Task erfüllt! \n"
             print(text)
             datei.write(text)
-            allLeave = False
+
         elif leftDepotCount > 1:
             text = "Techniker " + str(k + 1) + " fährt mehrmals vom Depot los! \n"
             print(text)
             datei.write(text)
-    if (allLeave):
-        text = "Alle Techniker fahren einmal vom Depot los! \n"
+    if (allLeaveThatFulfillTask):
+        text = "Alle Techniker, die mindestens einen Task erfüllen, fahren einmal vom Depot los! \n"
         print(text)
         datei.write(text)
 
 
-def do_technicians_come_back(k_set, i_set, j_set, x_i_j_k, d_k_e, datei):
-    allComeBack = True
+
+def do_technicians_come_back(k_set, i_set, in_set, j_set, x_i_j_k, z_k_in, d_k_e, datei):
+    allComeBackThatFulfillTask = True
     for k in k_set:
+        technicianFulfillsTask = False
         ComeBackToDepotCount = 0
         for i in i_set:
-            if i != d_k_e[k]:
+            if i >= len(k_set):
                 x = x_i_j_k[i, d_k_e[k], k].X
                 if x > 0.9 and x < 1:
                     x = 1
                 ComeBackToDepotCount += x
         if ComeBackToDepotCount < 1:
-            text = "Techniker " + str(k + 1) + " kehrt nicht zum Depot zurück! \n"
+            for i in in_set:
+                if z_k_in[k, i].X == 1:
+                    allComeBackThatFulfillTask = False
+                    technicianFulfillsTask = True
+            if not technicianFulfillsTask:
+                text = "Techniker " + str(k + 1) + " kehrt nicht zum Depot zurück, erfüllt aber auch keinen Task! \n"
+            else:
+                text = "Techniker " + str(k + 1) + " kehrt nicht zum Depot zurück, obwohl er einen Task erfüllt! \n"
             print(text)
             datei.write(text)
             allComeBack = False
@@ -87,8 +104,8 @@ def do_technicians_come_back(k_set, i_set, j_set, x_i_j_k, d_k_e, datei):
             text = "Techniker " + str(k + 1) + " kehrt mehrmals zum Depot zurück! \n"
             print(text)
             datei.write(text)
-    if (allComeBack):
-        text = "Alle Techniker kehren einmal zum Depot zurück! \n"
+    if (allComeBackThatFulfillTask):
+        text = "Alle Techniker, die mindestens einen Task erfüllen, kehren einmal zum Depot zurück! \n"
         print(text)
         datei.write(text)
 
